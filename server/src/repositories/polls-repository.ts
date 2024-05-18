@@ -1,6 +1,11 @@
-import { PollOption, Prisma } from "@prisma/client";
+import { Poll, Prisma } from "@prisma/client";
+
+export interface propsPolls {
+  title: string;
+  options: string[];
+}
 
 export interface PollsRepository {
-  create(data: Prisma.PollOptionCreateInput): Promise< PollOption | null>;
+  create(data: propsPolls): Promise<{ id: string }>;
 }
 

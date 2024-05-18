@@ -6,18 +6,25 @@ import { FailedToCreatePollError } from '../errors/failed-to-create-poll-error'
 export async function CreatePollsController(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     title: z.string(),
+    options: z.array(z.string()),
   })
 
-  const { title } = registerBodySchema.parse(request.body)
+  const { title, options } = registerBodySchema.parse(request.body)
 
   try {
     const pollCreateUseCase = makeCreatePollsUseCase()
 
     const poll = await pollCreateUseCase.execute({
-      title,
+      title, 
+      options,
     })
 
-    return reply.status(201).send({ pollId: poll.poll?.id })
+    const polls = {
+      ...poll,
+      options
+    };
+
+    return reply.status(201).send( polls )
 
   } catch (error: any) {
     if (error instanceof FailedToCreatePollError) {

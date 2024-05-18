@@ -1,21 +1,19 @@
-import { PollOption, Prisma } from "@prisma/client";
 import { prisma } from "../lib/prisma";
-import { PollsRepository } from "./polls-repository";
+import { PollsRepository, propsPolls } from "./polls-repository";
 
 export class prismaPollsRepository implements PollsRepository {
-  async create(data: Prisma.PollOptionCreateInput): Promise< PollOption | null> {
-    const poll = await prisma.pollOption.create({
+  async create(data: propsPolls): Promise<{ id: string }> {
+    const poll = await prisma.poll.create({
       data: {
         title: data.title,
-        id: data.id
+        options: {
+          createMany: {
+            data: data.options.map((option) => ({ title: option })),
+          },
+        }
       },
     });
 
-    return poll ? {
-      id: poll.id,
-      title: poll.title,
-      createdAt: poll.createdAt,
-      updateAt: poll.updateAt,
-    } : null;
+    return poll;
   }
 }
