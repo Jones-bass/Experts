@@ -1,4 +1,4 @@
-import { Poll, Prisma } from "@prisma/client";
+import { Poll } from "@prisma/client";
 
 export interface propsPolls {
   title: string;
@@ -7,5 +7,7 @@ export interface propsPolls {
 
 export interface PollsRepository {
   create(data: propsPolls): Promise<{ id: string }>;
+
+  findByEventId(pollId: string): Promise< Poll | null>;
 }
 
