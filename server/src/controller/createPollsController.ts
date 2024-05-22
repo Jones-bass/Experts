@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { makeCreatePollsUseCase } from '../usecases/factories/make-register-event-case'
+import { makeCreatePollsUseCase } from '../usecases/factories/make-register-poll-case'
 import { FailedToCreatePollError } from '../errors/failed-to-create-poll-error'
 
 export async function CreatePollsController(request: FastifyRequest, reply: FastifyReply) {

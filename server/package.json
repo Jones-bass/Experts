@@ -18,6 +18,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
     "@fastify/cors": "^9.0.1",
     "@prisma/client": "^5.13.0",
     "@rocketseat/eslint-config": "^2.2.2",

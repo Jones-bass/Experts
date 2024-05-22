@@ -1,6 +1,5 @@
-import { Poll } from "@prisma/client";
 import { prisma } from "../lib/prisma";
-import { PollsRepository, propsPolls } from "./polls-repository";
+import { PollWithOptions, PollsRepository, propsPolls } from "./polls-repository";
 
 export class prismaPollsRepository implements PollsRepository {
   async create(data: propsPolls): Promise<{ id: string }> {
@@ -18,18 +17,30 @@ export class prismaPollsRepository implements PollsRepository {
     return poll;
   }
 
-  async findByEventId(pollId: string): Promise< Poll | null> {
+  async findByEventId(pollId: string): Promise< PollWithOptions | null> {
     const getPoll = await prisma.poll.findUnique({
       where: {
         id: pollId,
       },
+      include: {
+        options: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
     });
     if (!getPoll) return null;
     return {
-      id: getPoll.id,
-      title: getPoll.title,
-      createdAt: getPoll.createdAt,
-      updateAt: getPoll.updateAt
-    };  
+        id: getPoll.id,
+        title: getPoll.title,
+        createdAt: getPoll.createdAt,
+        updateAt: getPoll.updateAt,
+        options: getPoll.options.map((option) => ({
+          id: option.id,
+          title: option.title,
+        })),
+      };  
   }
 }

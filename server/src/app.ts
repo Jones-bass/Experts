@@ -1,5 +1,6 @@
 import fastify from 'fastify'
 import fastifyCors from "@fastify/cors";
+import cookie from "@fastify/cookie";
 
 import { ZodError } from 'zod'
 import { env } from './env';
@@ -9,6 +10,11 @@ export const app = fastify()
 
 app.register(fastifyCors, {
   origin: '*',
+})
+
+app.register(cookie, {
+  secret: "polls-app-nlw",
+  hook: 'onRequest',
 })
 
 app.register(pollsRoutes)

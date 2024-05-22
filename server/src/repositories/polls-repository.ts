@@ -5,9 +5,16 @@ export interface propsPolls {
   options: string[];
 }
 
+export type PollWithOptions = Poll & {
+  options: {
+    id: string;
+    title: string;
+  }[];
+};
+
 export interface PollsRepository {
   create(data: propsPolls): Promise<{ id: string }>;
 
-  findByEventId(pollId: string): Promise< Poll | null>;
+  findByEventId( pollId: string ): Promise< PollWithOptions | null>;
 }
 
