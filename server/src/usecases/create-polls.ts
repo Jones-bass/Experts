@@ -1,3 +1,4 @@
+import { FailedToCreatePollError } from "../errors/failed-to-create-poll-error";
 import { PollsRepository } from "../repositories/polls-repository"
 
 interface RegisterUseCaseRequest {
@@ -12,6 +13,12 @@ export class CreatePollsUseCase {
     title,
     options
   }: RegisterUseCaseRequest) { 
+
+    const eventWithSameSlug = await this.pollsRepository.findByTitle(title);
+    
+    if (eventWithSameSlug !== null) {
+      throw new FailedToCreatePollError();
+    }
 
     const poll = await this.pollsRepository.create({
       title,

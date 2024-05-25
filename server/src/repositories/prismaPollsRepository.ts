@@ -1,3 +1,4 @@
+import { Poll } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 import { PollWithOptions, PollsRepository, propsPolls } from "./polls-repository";
 
@@ -15,6 +16,13 @@ export class prismaPollsRepository implements PollsRepository {
     });
 
     return poll;
+  }
+
+  async findByTitle(title: string): Promise<Poll | null> {
+    const findTitle = await prisma.poll.findFirst({
+      where: {title},
+    })
+    return findTitle
   }
 
   async findByEventId(pollId: string): Promise< PollWithOptions | null> {

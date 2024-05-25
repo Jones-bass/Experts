@@ -14,6 +14,7 @@ export type PollWithOptions = Poll & {
 
 export interface PollsRepository {
   create(data: propsPolls): Promise<{ id: string }>;
+  findByTitle( title: string ): Promise< Poll | null>;
 
   findByEventId( pollId: string ): Promise< PollWithOptions | null>;
 }
